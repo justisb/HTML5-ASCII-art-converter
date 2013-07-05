@@ -1,7 +1,7 @@
 <h1>HTML5-ASCII-art-converter</h1>
 Convert images to ASCII-arts. Use HTML5.<br />
-http://haruatari.github.io/HTML5-ASCII-art-converter
-
+Demo: http://haruatari.github.io/HTML5-ASCII-art-converter<br />
+Article on HabraHabr: http://habrahabr.ru/post/182782/
 <h2>Guide</h2>
 <ol>
     <li>Select source image (you can drop it to special field).</li>
