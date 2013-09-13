@@ -10,7 +10,7 @@ var Input = (function () {
             "image/png"
         ],
         fileData = null,
-        
+
         loadFile = function (file) {
             if (this.hasAllowMimeType(file.type) === false) {
                 alert("File has deny mime type.");
@@ -26,32 +26,19 @@ var Input = (function () {
 
 
     return function () {
-        this.getInputFieldId = function () {
-            return inputFieldId;
-        };
-
-        this.setInputFieldId = function (id) {
-            return inputFieldId = id;
-        };
-
-        this.getInputField = function () {
-            return document.getElementById(this.getInputFieldId());
-        };
-
-        this.getAllowMimeTypes = function () {
-            return allowMimeTypes;
-        };
-
-        this.hasAllowMimeType = function (mime) {
-            return this.getAllowMimeTypes().indexOf(mime) > -1;
-        };
-
         this.loadFromField = function (event) {
             loadFile(event.dataTransfer.files[0]);
         };
 
-        this.getFileData = function() {
-            return fileData;
-        }
+        this.getInputFieldId = function () { return inputFieldId; };
+        this.setInputFieldId = function (id) { return inputFieldId = id; };
+
+        this.getInputField = function () { return document.getElementById(this.getInputFieldId()); };
+
+        this.getAllowMimeTypes = function () { return allowMimeTypes; };
+
+        this.hasAllowMimeType = function (mime) { return this.getAllowMimeTypes().indexOf(mime) > -1; };
+
+        this.getFileData = function() { return fileData; }
     }
 })();
