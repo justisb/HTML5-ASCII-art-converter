@@ -1,7 +1,7 @@
 /**
  * @author Pikaev Viktor <HaruAtari@gmail.com> https://github.com/HaruAtari
  */
-var Input = (function () {
+var Input = function () {
     var self = this,
         inputFieldId = "input-field",
         allowMimeTypes = [
@@ -11,8 +11,8 @@ var Input = (function () {
         ],
         fileData = null,
 
-        loadFile = function (file) {
-            if (this.hasAllowMimeType(file.type) === false) {
+        loadFile = function (file, callback) {
+            if (self.hasAllowMimeType(file.type) === false) {
                 alert("File has deny mime type.");
                 throw "File has deny mime type.";
             }
@@ -20,25 +20,37 @@ var Input = (function () {
             var reader = new FileReader();
             reader.onload = function (data) {
                 fileData = data.target.result;
+                if (typeof callback === "function") {
+                    callback();
+                }
             }
             reader.readAsDataURL(file);
         };
 
+    this.loadFromField = function (event, callback) {
+        loadFile(event.target.files[0], callback);
+    };
 
-    return function () {
-        this.loadFromField = function (event) {
-            loadFile(event.dataTransfer.files[0]);
-        };
+    this.getInputFieldId = function () {
+        return inputFieldId;
+    };
+    this.setInputFieldId = function (id) {
+        return inputFieldId = id;
+    };
 
-        this.getInputFieldId = function () { return inputFieldId; };
-        this.setInputFieldId = function (id) { return inputFieldId = id; };
+    this.getInputField = function () {
+        return document.getElementById(self.getInputFieldId());
+    };
 
-        this.getInputField = function () { return document.getElementById(this.getInputFieldId()); };
+    this.getAllowMimeTypes = function () {
+        return allowMimeTypes;
+    };
 
-        this.getAllowMimeTypes = function () { return allowMimeTypes; };
+    this.hasAllowMimeType = function (mime) {
+        return self.getAllowMimeTypes().indexOf(mime) > -1;
+    };
 
-        this.hasAllowMimeType = function (mime) { return this.getAllowMimeTypes().indexOf(mime) > -1; };
-
-        this.getFileData = function() { return fileData; }
+    this.getFileData = function () {
+        return fileData;
     }
-})();
+};
