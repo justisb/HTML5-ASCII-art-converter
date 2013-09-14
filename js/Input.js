@@ -4,70 +4,86 @@
 var Input = function () {
     var self = this;
 
-    // Id поля выбора исходного файла.
+    /**
+     * @type {string} id поля выбора файла.
+     */
     var inputFieldId = "input-field";
+    this.getInputFieldId = function () { return inputFieldId; };
+    this.setInputFieldId = function (id) { return inputFieldId = id; };
 
-    // Список допустимых расширений.
+    /**
+     * @type {DOM-object} поля выбора файла.
+     */
+    var inputField = null;
+    this.getInputField = function () { return document.getElementById(self.getInputFieldId()); };
+
+    /**
+     * @type {string} id изображения предпросмотра.
+     */
+    var previewImageId = "image-preview";
+    this.getPreviewImageId = function () { return previewImageId; };
+    this.setPreviewImageId = function (id) { return previewImageId = id; };
+
+    /**
+     * @type {DOM-object} изображение предпросмотра.
+     */
+    var previewImage = null;
+    this.getPreviewImage = function () {
+        if (previewImage === null) {
+            previewImage = document.getElementById(self.getPreviewImageId());
+        }
+        if (previewImage === null) {
+            previewImage = document.createElement("image");
+            previewImage.id = self.getPreviewImageId();
+        }
+        return previewImage;
+    };
+    this.setPreviewImageSrc = function(src) { return self.getPreviewImage().src = src; }
+
+    /**
+     * @type {Array} cписок допустимых расширений.
+     */
     var allowMimeTypes = [
         "image/jpg",
         "image/jpeg",
         "image/png"
     ];
+    this.getAllowMimeTypes = function () { return allowMimeTypes; };
+    this.hasAllowMimeType = function (mime) { return self.getAllowMimeTypes().indexOf(mime) > -1; };
 
-    // Загруженный файл в bas64 кодировке
+    /**
+     * @type {string} содержимое загруженного изображения в base64.
+     */
     var fileData = null;
+    this.getFileData = function () { return fileData; };
 
-    // Сохраняет содержимое выбранного файла в переменную fileData.
-    // {file} - Загруженный файл. @see this.loadFromField()
-    // {callback} - Функция, которая будет вызвана после завершения загрузки.
+    /**
+     * Сохраняет содержимое указанного файла в self::fileData.
+     * @param file Исходное изображение.
+     * @param callback Callback-функция. Запускается по окончанию загрузки.
+     */
     var loadFile = function (file, callback) {
-            if (self.hasAllowMimeType(file.type) === false) {
-                alert("File has deny mime type.");
-                throw "File has deny mime type.";
-            }
+        if (self.hasAllowMimeType(file.type) === false) {
+            alert("File has deny mime type.");
+            throw "File has deny mime type.";
+        }
 
-            var reader = new FileReader();
-            reader.onload = function (data) {
-                fileData = data.target.result;
-                if (typeof callback === "function") {
-                    callback();
-                }
+        var reader = new FileReader();
+        reader.onload = function (data) {
+            fileData = data.target.result;
+            if (typeof callback === "function") {
+                callback();
             }
-            reader.readAsDataURL(file);
-        };
+        }
+        reader.readAsDataURL(file);
+    };
 
-    // Загружает файл из поля выбора файла.
+    /**
+     * Загрузка изображения из поля выбора файла.
+     * @param event Событие change.
+     * @param callback Callback-функция. Запускается по окончанию загрузки.
+     */
     this.loadFromField = function (event, callback) {
         loadFile(event.target.files[0], callback);
-    };
-
-    // Возвращает Id поля выбора файла.
-    this.getInputFieldId = function () {
-        return inputFieldId;
-    };
-
-    // Устанавливает Id поля выбора файла.
-    this.setInputFieldId = function (id) {
-        return inputFieldId = id;
-    };
-
-    // Возвращает поле выбора файла.
-    this.getInputField = function () {
-        return document.getElementById(self.getInputFieldId());
-    };
-
-    // Возвращает список допустимых расширений.
-    this.getAllowMimeTypes = function () {
-        return allowMimeTypes;
-    };
-
-    // Проверяет, допустимо ли указанное расширение.
-    this.hasAllowMimeType = function (mime) {
-        return self.getAllowMimeTypes().indexOf(mime) > -1;
-    };
-
-    // Возвращает содержимое загруденного файла.
-    this.getFileData = function () {
-        return fileData;
     };
 };
