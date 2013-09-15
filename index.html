@@ -4,10 +4,24 @@
     <title></title>
     <script src="js/Input.js"></script>
     <script src="js/Output.js"></script>
+    <script src="js/Converter.js"></script>
 </head>
 <body>
+
 <input type="file" id="input-field"/>
 <br/>
+<img src="" id="image-preview" alt="" style="float:left"/>
+<canvas id="canvas-work"></canvas>
+<script>
+    var input = new Input();
+    var output = new Output();
+    var converter = new Converter();
 
+    input.getInputField().addEventListener('change', function(event) {
+        input.loadFromField(event, function() {
+            input.setPreviewImageSrc(input.getFileData());
+        });
+    });
+</script>
 </body>
 </html>

@@ -39,6 +39,8 @@ var Input = function () {
         return previewImage;
     };
     this.setPreviewImageSrc = function(src) { return self.getPreviewImage().src = src; }
+    this.getPreviewImageWidth = function() { return self.getPreviewImage().width; };
+    this.getPreviewImageHeight = function() { return self.getPreviewImage().height; };
 
     /**
      * @type {Array} cписок допустимых расширений.
