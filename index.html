@@ -17,8 +17,8 @@
     var output = new Output();
     var converter = new Converter();
 
-    input.getInputField().addEventListener('change', function(event) {
-        input.loadFromField(event, function() {
+    input.getInputField().addEventListener('change', function (event) {
+        input.loadFromField(event, function () {
             input.setPreviewImageSrc(input.getFileData());
         });
     });

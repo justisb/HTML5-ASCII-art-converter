@@ -51,7 +51,7 @@ var Converter = function () {
     /**
      * @type {number} размер шрифта.
      */
-    var fontSize = 7;
+    var fontSize = 10;
     var getFontSize = function() { return fontSize + "px"; };
     var getFontFamily = function() { return "lucida console"; };
 
@@ -143,14 +143,17 @@ var Converter = function () {
         var res = [];
         for (var x = 0; x < getCanvasWidth(); x += getLetterSize()[0]) {
             for (var y = 0; y < getCanvasHeight(); y += getLetterSize()[1]) {
-                var letter = getLetterForPolygon(getPolygonByXY(x, y));
-                res.push([x, y]
-                    .concat(letter.letter)
-                    .concat(letter.r)
-                    .concat(letter.g)
-                    .concat(letter.b)
-                    .concat(letter.a)
-                );
+                var letters = getLettersForPolygon(getPolygonByXY(x, y));
+                for (var i = 0; i < letters.length; i++) {
+                    var letter = letters[i];
+                    res.push([x, y]
+                        .concat(letter.letter)
+                        .concat(letter.r)
+                        .concat(letter.g)
+                        .concat(letter.b)
+                        .concat(letter.a)
+                    );
+                }
             }
         }
         return res;
@@ -161,15 +164,15 @@ var Converter = function () {
      * @param polygon Полигон для которого подбирается символ.
      * @returns {letter: string, r: number, g: number, b: number, a: number}
      */
-    var getLetterForPolygon = function(polygon) {
+    var getLettersForPolygon = function(polygon) {
         var color = polygon[0][0];
-        return {
-            letter: "#",
+        return [{
+            letter: "@",
             r: color[0],
             g: color[1],
             b: color[2],
             a: 255
-        };
+        }];
     };
 
     /**
