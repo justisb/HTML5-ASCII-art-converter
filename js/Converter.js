@@ -164,17 +164,40 @@ var Converter = function()
         var context = getCanvasContext();
         var width = getCanvasWidth();
         var height = getCanvasHeight();
+        var fontSize = parseInt(_this.getFontSize(), 10);
 
         context.clearRect(0, 0, width, height);
         context.fillStyle =  _this.getBackgroundColor();
         context.fillRect(0, 0, width, height);
 
+        var asciiGrid = [];
+
         for (var i = 0; i < pixelsList.length; i++) {
+            var char = getNextUsedChar();
+
+            // Add character to canvas
             var px = pixelsList[i];
             context.fillStyle = "rgba(" + px.r +", " + px.g + ", " + px.b + ", " + px.a + ")";
-            context.font = _this.getFontSize() + "px Monospace";
-            context.fillText(getNextUsedChar(), px.x, px.y);
+            context.font = fontSize + "px Monospace";
+            context.fillText(char, px.x, px.y);
+
+            // Add non-transparent characters to nested array
+            var y = px.y / (fontSize - 1);
+            if (typeof asciiGrid[y] === "undefined") {
+                asciiGrid[y] = [];
+            }
+            asciiGrid[y][px.x] = px.a ? char : ' ';
         }
+
+        // Build ASCII output
+        for (var y = 0; y < asciiGrid.length; y++) {
+            if (typeof asciiGrid[y] === "undefined") {
+                asciiGrid[y] = [];
+            }
+            asciiGrid[y] = asciiGrid[y].join("");
+        }
+        // Join rows with newline
+        console.log(asciiGrid.join("\n"));
 
         return getCanvas().toDataURL();
     };
